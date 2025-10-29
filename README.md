@@ -30,7 +30,7 @@ A full-stack e-commerce website for a bakery business, featuring a complete onli
 
 - **Frontend**: Next.js 15 (App Router), React 18, TypeScript
 - **Styling**: Tailwind CSS
-- **Database**: SQLite with Prisma ORM
+- **Database**: PostgreSQL with Prisma ORM
 - **State Management**: React Context API
 - **Form Handling**: React Hooks
 - **Image Optimization**: Next.js Image component
@@ -55,18 +55,26 @@ cd bakery-ecommerce
 npm install
 ```
 
-3. Set up the database:
+3. Set up environment variables:
 ```bash
-DATABASE_URL="file:./dev.db" npx prisma migrate dev
-DATABASE_URL="file:./dev.db" npx tsx prisma/seed.ts
+# Create .env file
+echo "DATABASE_URL=your_postgresql_connection_string" > .env
 ```
 
-4. Run the development server:
+For local development, you can use a local PostgreSQL instance or a free hosted database (see Deployment section).
+
+4. Set up the database:
+```bash
+npx prisma migrate deploy
+npx tsx prisma/seed.ts
+```
+
+5. Run the development server:
 ```bash
 npm run dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
+6. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ### Admin Access
 
@@ -111,12 +119,12 @@ npm start
 npm run lint
 
 # Open Prisma Studio (database GUI)
-DATABASE_URL="file:./dev.db" npx prisma studio
+npx prisma studio
 ```
 
 ## 🗃️ Database
 
-The project uses SQLite for easy local development. The database includes:
+The project uses PostgreSQL for production-ready data persistence. The database includes:
 
 - **Products** table with full product information
 - Automatic timestamps (createdAt, updatedAt)
@@ -126,29 +134,49 @@ The project uses SQLite for easy local development. The database includes:
 
 ```bash
 # View/edit database in browser
-DATABASE_URL="file:./dev.db" npx prisma studio
+npx prisma studio
 
 # Create new migration
-DATABASE_URL="file:./dev.db" npx prisma migrate dev --name migration_name
+npx prisma migrate dev --name migration_name
+
+# Deploy migrations (production)
+npx prisma migrate deploy
 
 # Re-seed database
-DATABASE_URL="file:./dev.db" npx tsx prisma/seed.ts
+npx tsx prisma/seed.ts
 ```
 
 ## 🚀 Deployment
 
-### Vercel (Recommended)
+### Vercel with Vercel Postgres (Recommended)
 
-1. Push to GitHub
-2. Import project in Vercel
-3. Set environment variable: `DATABASE_URL` (use PostgreSQL for production)
-4. Deploy
+1. **Push to GitHub**
+   ```bash
+   git push origin main
+   ```
 
-### Environment Variables
+2. **Import project in Vercel**
+   - Go to [vercel.com](https://vercel.com)
+   - Click "New Project" and import your GitHub repository
 
-For production, update these:
-- `DATABASE_URL` - Your production database URL
-- `NEXT_PUBLIC_API_URL` - Your API base URL
+3. **Add Vercel Postgres**
+   - In your Vercel project dashboard, go to the "Storage" tab
+   - Click "Create Database" → "Postgres"
+   - Follow the prompts to create a free Postgres database
+   - Vercel will automatically set the `DATABASE_URL` environment variable
+
+4. **Deploy**
+   - Vercel will automatically deploy your project
+   - The build process will run migrations and seed the database
+
+### Alternative: Other PostgreSQL Providers
+
+You can also use other PostgreSQL providers:
+- **Neon** - Free serverless Postgres
+- **Supabase** - Free tier with additional features
+- **Railway** - Simple deployment platform
+
+For these, set the `DATABASE_URL` environment variable in Vercel's project settings.
 
 ## 🎨 Customization
 
