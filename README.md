@@ -46,8 +46,8 @@ A full-stack e-commerce website for a bakery business, featuring a complete onli
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/YOUR_USERNAME/bakery-website.git
-cd bakery-website
+git clone https://github.com/clfarr/bakery-ecommerce.git
+cd bakery-ecommerce
 ```
 
 2. Install dependencies:
