@@ -1,0 +1,8 @@
+This directory contains product images.
+
+To add actual images:
+1. Add image files (JPG, PNG, WEBP) to public/images/products/
+2. Name them descriptively (e.g., vanilla-cake.jpg, chocolate-cupcakes.jpg)
+3. Update products in the admin panel to reference these images
+
+For now, the site will use placeholder images from unsplash.com as fallbacks.
