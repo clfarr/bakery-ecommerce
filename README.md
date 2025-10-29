@@ -167,7 +167,11 @@ npx tsx prisma/seed.ts
 
 4. **Deploy**
    - Vercel will automatically deploy your project
-   - The build process will run migrations and seed the database
+   - The build process will automatically:
+     - Generate Prisma client
+     - Run database migrations
+     - Seed the database with all products
+   - No manual seeding required!
 
 ### Alternative: Other PostgreSQL Providers
 

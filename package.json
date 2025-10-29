@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "DATABASE_URL=${DATABASE_URL:-file:./dev.db} prisma generate && next build",
+    "build": "prisma generate && prisma migrate deploy && npx tsx prisma/seed.ts && next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "DATABASE_URL=${DATABASE_URL:-file:./dev.db} prisma generate"
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^6.18.0",
