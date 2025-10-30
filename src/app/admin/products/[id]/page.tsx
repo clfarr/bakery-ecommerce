@@ -16,6 +16,7 @@ export default function AdminEditProductPage() {
   const [formData, setFormData] = useState<Product | null>(null)
   const [saved, setSaved] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [uploading, setUploading] = useState(false)
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -62,6 +63,35 @@ export default function AdminEditProductPage() {
   const handleArrayChange = (field: 'flavors' | 'sizes', value: string) => {
     const items = value.split(',').map(item => item.trim()).filter(item => item)
     setFormData((prev) => prev ? { ...prev, [field]: items } : null)
+  }
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setUploading(true)
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (res.ok) {
+        const data = await res.json()
+        setFormData((prev) => prev ? { ...prev, image: data.imagePath } : null)
+      } else {
+        const error = await res.json()
+        alert(error.error || 'Failed to upload image')
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      alert('Failed to upload image')
+    } finally {
+      setUploading(false)
+    }
   }
 
   const handleSave = async () => {
@@ -167,21 +197,47 @@ export default function AdminEditProductPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold mb-2">
-                    Image URL
-                    <span className="text-xs text-gray-500 ml-2">(Use Unsplash, local path, or leave blank for emoji)</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="image"
-                    value={formData.image || ''}
-                    onChange={handleChange}
-                    placeholder="https://images.unsplash.com/..."
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Tip: Search <a href="https://unsplash.com" target="_blank" className="text-primary-600 hover:underline">Unsplash</a> for cake images and copy the URL
-                  </p>
+                  <label className="block text-sm font-semibold mb-2">Product Image</label>
+
+                  {/* File Upload */}
+                  <div className="mb-3">
+                    <label className="block">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/jpg,image/png,image/webp"
+                          onChange={handleImageUpload}
+                          className="hidden"
+                          id="image-upload"
+                          disabled={uploading}
+                        />
+                        <label
+                          htmlFor="image-upload"
+                          className={`cursor-pointer px-4 py-2 rounded-lg border-2 border-primary-600 text-primary-600 hover:bg-primary-50 transition-colors ${
+                            uploading ? 'opacity-50 cursor-not-allowed' : ''
+                          }`}
+                        >
+                          {uploading ? 'Uploading...' : '📁 Upload Image'}
+                        </label>
+                        <span className="text-xs text-gray-500">
+                          Max 5MB • JPEG, PNG, WebP
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+
+                  {/* Or enter URL manually */}
+                  <div>
+                    <p className="text-xs text-gray-600 mb-2">Or enter image path manually:</p>
+                    <input
+                      type="text"
+                      name="image"
+                      value={formData.image || ''}
+                      onChange={handleChange}
+                      placeholder="/images/products/your-image.jpg"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                    />
+                  </div>
                 </div>
 
                 <div>
