@@ -248,22 +248,26 @@ const galleryItems = [
 async function main() {
   console.log('Starting seed...')
 
-  // Seed products
+  // Seed products - only create if they don't exist (don't overwrite!)
   for (const product of products) {
-    await prisma.product.upsert({
-      where: { id: product.id },
-      update: product,
-      create: product,
-    })
+    const existing = await prisma.product.findUnique({ where: { id: product.id } })
+    if (!existing) {
+      await prisma.product.create({ data: product })
+      console.log(`Created product: ${product.name}`)
+    } else {
+      console.log(`Product already exists, skipping: ${product.name}`)
+    }
   }
 
-  // Seed gallery items
+  // Seed gallery items - only create if they don't exist
   for (const item of galleryItems) {
-    await prisma.galleryItem.upsert({
-      where: { id: item.id },
-      update: item,
-      create: item,
-    })
+    const existing = await prisma.galleryItem.findUnique({ where: { id: item.id } })
+    if (!existing) {
+      await prisma.galleryItem.create({ data: item })
+      console.log(`Created gallery item: ${item.name}`)
+    } else {
+      console.log(`Gallery item already exists, skipping: ${item.name}`)
+    }
   }
 
   console.log('Seed completed successfully!')
