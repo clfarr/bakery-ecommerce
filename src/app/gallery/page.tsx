@@ -88,13 +88,13 @@ export default function GalleryPage() {
                 onClick={() => setSelectedItem(item)}
                 className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition-all hover:scale-105"
               >
-                <div className="relative h-64">
+                <div className="relative h-64 bg-white">
                   <Image
                     src={item.image}
                     alt={item.name}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                    className="object-cover"
+                    className="object-contain"
                   />
                 </div>
                 <div className="p-4">
@@ -116,13 +116,13 @@ export default function GalleryPage() {
               className="bg-white rounded-lg max-w-3xl w-full overflow-hidden max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="relative h-96">
+              <div className="relative h-96 bg-white">
                 <Image
                   src={selectedItem.image}
                   alt={selectedItem.name}
                   fill
                   sizes="(max-width: 768px) 100vw, 800px"
-                  className="object-cover"
+                  className="object-contain"
                 />
               </div>
               <div className="p-6">

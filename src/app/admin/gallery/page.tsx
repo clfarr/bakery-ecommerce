@@ -173,13 +173,13 @@ export default function AdminGalleryPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {items.map((item) => (
             <div key={item.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="relative h-48">
+              <div className="relative h-48 bg-white">
                 <Image
                   src={item.image}
                   alt={item.name}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                  className="object-cover"
+                  className="object-contain"
                 />
               </div>
               <div className="p-4">
@@ -280,13 +280,13 @@ export default function AdminGalleryPage() {
                   </div>
 
                   {formData.image && (
-                    <div className="relative h-48 rounded-lg overflow-hidden">
+                    <div className="relative h-48 rounded-lg overflow-hidden bg-white border border-gray-200">
                       <Image
                         src={formData.image}
                         alt="Preview"
                         fill
                         sizes="(max-width: 768px) 100vw, 50vw"
-                        className="object-cover"
+                        className="object-contain"
                       />
                     </div>
                   )}
