@@ -86,15 +86,19 @@ export default async function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Link href="/products?category=cakes" className="group">
               <div className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                {cakeProduct && (
+                {cakeProduct ? (
                   <div className="relative h-64 bg-white">
                     <Image
-                      src={cakeProduct.image || '/images/products/vanilla-cake.jpg'}
+                      src={cakeProduct.image}
                       alt="Custom Cakes"
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
                       className="object-contain"
                     />
+                  </div>
+                ) : (
+                  <div className="h-64 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
+                    <span className="text-8xl">🎂</span>
                   </div>
                 )}
                 <div className="p-6 text-center">
@@ -109,15 +113,19 @@ export default async function Home() {
             </Link>
             <Link href="/products?category=cupcakes" className="group">
               <div className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                {cupcakeProduct && (
+                {cupcakeProduct ? (
                   <div className="relative h-64 bg-white">
                     <Image
-                      src={cupcakeProduct.image || '/images/products/vanilla-cupcakes.jpg'}
+                      src={cupcakeProduct.image}
                       alt="Cupcakes"
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
                       className="object-contain"
                     />
+                  </div>
+                ) : (
+                  <div className="h-64 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
+                    <span className="text-8xl">🧁</span>
                   </div>
                 )}
                 <div className="p-6 text-center">
@@ -132,15 +140,19 @@ export default async function Home() {
             </Link>
             <Link href="/products?category=cake-pops" className="group">
               <div className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                {cakePopProduct && (
+                {cakePopProduct ? (
                   <div className="relative h-64 bg-white">
                     <Image
-                      src={cakePopProduct.image || '/images/products/classic-cake-pops.jpg'}
+                      src={cakePopProduct.image}
                       alt="Cake Pops"
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
                       className="object-contain"
                     />
+                  </div>
+                ) : (
+                  <div className="h-64 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
+                    <span className="text-8xl">🍭</span>
                   </div>
                 )}
                 <div className="p-6 text-center">
