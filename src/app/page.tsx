@@ -86,7 +86,7 @@ export default async function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Link href="/products?category=cakes" className="group">
               <div className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                {cakeProduct ? (
+                {cakeProduct?.image ? (
                   <div className="relative h-64 bg-white">
                     <Image
                       src={cakeProduct.image}
@@ -113,7 +113,7 @@ export default async function Home() {
             </Link>
             <Link href="/products?category=cupcakes" className="group">
               <div className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                {cupcakeProduct ? (
+                {cupcakeProduct?.image ? (
                   <div className="relative h-64 bg-white">
                     <Image
                       src={cupcakeProduct.image}
@@ -140,7 +140,7 @@ export default async function Home() {
             </Link>
             <Link href="/products?category=cake-pops" className="group">
               <div className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                {cakePopProduct ? (
+                {cakePopProduct?.image ? (
                   <div className="relative h-64 bg-white">
                     <Image
                       src={cakePopProduct.image}
