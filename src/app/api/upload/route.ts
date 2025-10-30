@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { put } from '@vercel/blob'
 import { writeFile } from 'fs/promises'
 import { join } from 'path'
 
@@ -29,26 +30,40 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Convert file to buffer
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
-
     // Generate unique filename
     const timestamp = Date.now()
     const originalName = file.name.replace(/\s+/g, '-').toLowerCase()
-    const filename = `${timestamp}-${originalName}`
+    const filename = `products/${timestamp}-${originalName}`
 
-    // Save to public/images/products
-    const path = join(process.cwd(), 'public', 'images', 'products', filename)
-    await writeFile(path, buffer)
+    // Check if Vercel Blob is available (production)
+    const isProduction = process.env.BLOB_READ_WRITE_TOKEN
 
-    // Return the public URL path
-    const imagePath = `/images/products/${filename}`
+    if (isProduction) {
+      // Upload to Vercel Blob (production)
+      const blob = await put(filename, file, {
+        access: 'public',
+      })
 
-    return NextResponse.json({
-      success: true,
-      imagePath
-    })
+      return NextResponse.json({
+        success: true,
+        imagePath: blob.url
+      })
+    } else {
+      // Fallback to local filesystem (development)
+      const bytes = await file.arrayBuffer()
+      const buffer = Buffer.from(bytes)
+
+      const localFilename = `${timestamp}-${originalName}`
+      const path = join(process.cwd(), 'public', 'images', 'products', localFilename)
+      await writeFile(path, buffer)
+
+      const imagePath = `/images/products/${localFilename}`
+
+      return NextResponse.json({
+        success: true,
+        imagePath
+      })
+    }
   } catch (error) {
     console.error('Error uploading file:', error)
     return NextResponse.json({ error: 'Failed to upload file' }, { status: 500 })

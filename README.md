@@ -22,7 +22,8 @@ A full-stack e-commerce website for a bakery business, featuring a complete onli
 ### Admin Features
 - **Admin Dashboard** - Secure admin panel with password protection
 - **Product Management** - Full CRUD operations for products
-- **Image Management** - Easy product image updates via URL
+- **Image Upload** - Upload product images directly (max 5MB, JPEG/PNG/WebP)
+- **Cloud Storage** - Images stored in Vercel Blob for production persistence
 - **Real-time Preview** - See changes before saving
 - **Database Persistence** - All changes saved to database
 
@@ -31,6 +32,7 @@ A full-stack e-commerce website for a bakery business, featuring a complete onli
 - **Frontend**: Next.js 15 (App Router), React 18, TypeScript
 - **Styling**: Tailwind CSS
 - **Database**: PostgreSQL with Prisma ORM
+- **File Storage**: Vercel Blob (for image uploads)
 - **State Management**: React Context API
 - **Form Handling**: React Hooks
 - **Image Optimization**: Next.js Image component
@@ -165,13 +167,21 @@ npx tsx prisma/seed.ts
    - Follow the prompts to create a free Postgres database
    - Vercel will automatically set the `DATABASE_URL` environment variable
 
-4. **Deploy**
+4. **Add Vercel Blob** (for image uploads)
+   - In the same "Storage" tab, click "Create Database" again
+   - Select "Blob"
+   - Create a blob store (free tier available)
+   - Vercel will automatically set the `BLOB_READ_WRITE_TOKEN` environment variable
+   - This enables admin users to upload product images in production
+
+5. **Deploy**
    - Vercel will automatically deploy your project
    - The build process will automatically:
      - Generate Prisma client
      - Run database migrations
      - Seed the database with all products
    - No manual seeding required!
+   - Image uploads will work in production via Vercel Blob
 
 ### Alternative: Other PostgreSQL Providers
 
