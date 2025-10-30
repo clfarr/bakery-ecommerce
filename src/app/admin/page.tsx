@@ -125,10 +125,33 @@ export default function AdminPage() {
 
       {/* Content */}
       <div className="container mx-auto px-4 py-12">
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          <Link
+            href="/admin/products"
+            className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-2 border-transparent hover:border-primary-600"
+          >
+            <h3 className="text-2xl font-bold mb-2">🛍️ Product Management</h3>
+            <p className="text-gray-600">
+              Manage your bakery products, update images, prices, and descriptions.
+            </p>
+          </Link>
+
+          <Link
+            href="/admin/gallery"
+            className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-2 border-transparent hover:border-primary-600"
+          >
+            <h3 className="text-2xl font-bold mb-2">🖼️ Gallery Management</h3>
+            <p className="text-gray-600">
+              Upload and manage gallery images showcasing your bakery creations.
+            </p>
+          </Link>
+        </div>
+
         <div className="mb-8">
-          <h2 className="text-3xl font-bold mb-2">Product Management</h2>
+          <h2 className="text-3xl font-bold mb-2">Recent Products</h2>
           <p className="text-gray-600">
-            Manage your bakery products, update images, prices, and descriptions.
+            Quick view of your products. Click a product to edit.
           </p>
         </div>
 

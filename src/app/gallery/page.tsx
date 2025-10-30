@@ -1,27 +1,32 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
-
-// Sample gallery data with real images
-const galleryItems = [
-  { id: 1, category: 'cakes', image: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80', emoji: '🎂', name: 'Classic Wedding Cake', description: '3-tier vanilla with buttercream' },
-  { id: 2, category: 'cakes', emoji: '🍫', name: 'Chocolate Dream', description: 'Rich chocolate with ganache' },
-  { id: 3, category: 'cakes', emoji: '🎉', name: 'Birthday Celebration', description: 'Colorful funfetti design' },
-  { id: 4, category: 'cupcakes', emoji: '🧁', name: 'Vanilla Cupcakes', description: 'Classic vanilla with swirl frosting' },
-  { id: 5, category: 'cupcakes', emoji: '🍓', name: 'Strawberry Cupcakes', description: 'Fresh strawberry flavor' },
-  { id: 6, category: 'cupcakes', emoji: '🍫', name: 'Chocolate Cupcakes', description: 'Double chocolate delight' },
-  { id: 7, category: 'cake-pops', emoji: '🍭', name: 'Rainbow Cake Pops', description: 'Colorful and fun' },
-  { id: 8, category: 'cake-pops', emoji: '💍', name: 'Wedding Cake Pops', description: 'Elegant white chocolate' },
-  { id: 9, category: 'cake-pops', emoji: '🎨', name: 'Custom Themed Pops', description: 'Personalized designs' },
-  { id: 10, category: 'cakes', emoji: '❤️', name: 'Red Velvet Romance', description: 'Classic red velvet with cream cheese' },
-  { id: 11, category: 'cakes', emoji: '🌸', name: 'Floral Fantasy', description: 'Decorated with edible flowers' },
-  { id: 12, category: 'cupcakes', emoji: '✨', name: 'Specialty Cupcakes', description: 'Gourmet flavors' },
-]
+import { GalleryItem } from '@/types'
 
 export default function GalleryPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
-  const [selectedItem, setSelectedItem] = useState<typeof galleryItems[0] | null>(null)
+  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null)
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchGalleryItems()
+  }, [])
+
+  const fetchGalleryItems = async () => {
+    try {
+      const res = await fetch('/api/gallery')
+      if (res.ok) {
+        const data = await res.json()
+        setGalleryItems(data)
+      }
+    } catch (error) {
+      console.error('Error fetching gallery items:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const filteredItems = selectedCategory === 'all'
     ? galleryItems
@@ -33,6 +38,16 @@ export default function GalleryPage() {
     { id: 'cupcakes', name: 'Cupcakes', emoji: '🧁' },
     { id: 'cake-pops', name: 'Cake Pops', emoji: '🍭' },
   ]
+
+  if (loading) {
+    return (
+      <div className="py-12 bg-gray-50 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600">Loading gallery...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="py-12 bg-gray-50 min-h-screen">
@@ -61,23 +76,35 @@ export default function GalleryPage() {
         </div>
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredItems.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => setSelectedItem(item)}
-              className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition-all hover:scale-105"
-            >
-              <div className="h-64 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
-                <span className="text-8xl">{item.emoji}</span>
+        {filteredItems.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-600 mb-4">No gallery items yet. Check back soon!</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredItems.map((item) => (
+              <div
+                key={item.id}
+                onClick={() => setSelectedItem(item)}
+                className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition-all hover:scale-105"
+              >
+                <div className="relative h-64">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-semibold text-lg mb-1">{item.name}</h3>
+                  <p className="text-sm text-gray-600">{item.description}</p>
+                </div>
               </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-lg mb-1">{item.name}</h3>
-                <p className="text-sm text-gray-600">{item.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* Modal */}
         {selectedItem && (
@@ -86,11 +113,17 @@ export default function GalleryPage() {
             onClick={() => setSelectedItem(null)}
           >
             <div
-              className="bg-white rounded-lg max-w-2xl w-full overflow-hidden"
+              className="bg-white rounded-lg max-w-3xl w-full overflow-hidden max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="h-96 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
-                <span className="text-[200px]">{selectedItem.emoji}</span>
+              <div className="relative h-96">
+                <Image
+                  src={selectedItem.image}
+                  alt={selectedItem.name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  className="object-cover"
+                />
               </div>
               <div className="p-6">
                 <h2 className="text-3xl font-bold mb-2">{selectedItem.name}</h2>

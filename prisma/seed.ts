@@ -162,14 +162,107 @@ const products = [
   },
 ]
 
+const galleryItems = [
+  {
+    id: 'gallery-wedding-cake',
+    name: 'Elegant Wedding Cake',
+    description: '3-tier vanilla wedding cake with elegant buttercream flowers',
+    category: 'cakes',
+    image: '/images/products/wedding-cake.jpg',
+    order: 1,
+  },
+  {
+    id: 'gallery-chocolate-cake',
+    name: 'Chocolate Dream',
+    description: 'Rich chocolate cake with decadent ganache',
+    category: 'cakes',
+    image: '/images/products/chocolate-cake.jpg',
+    order: 2,
+  },
+  {
+    id: 'gallery-birthday-cake',
+    name: 'Birthday Celebration',
+    description: 'Colorful funfetti design perfect for birthdays',
+    category: 'cakes',
+    image: '/images/products/birthday-cake.jpg',
+    order: 3,
+  },
+  {
+    id: 'gallery-red-velvet',
+    name: 'Red Velvet Romance',
+    description: 'Classic red velvet with cream cheese frosting',
+    category: 'cakes',
+    image: '/images/products/red-velvet-cake.jpg',
+    order: 4,
+  },
+  {
+    id: 'gallery-vanilla-cupcakes',
+    name: 'Vanilla Cupcakes',
+    description: 'Classic vanilla cupcakes with swirl frosting',
+    category: 'cupcakes',
+    image: '/images/products/vanilla-cupcakes.jpg',
+    order: 5,
+  },
+  {
+    id: 'gallery-chocolate-cupcakes',
+    name: 'Chocolate Cupcakes',
+    description: 'Double chocolate delight',
+    category: 'cupcakes',
+    image: '/images/products/chocolate-cupcakes.jpg',
+    order: 6,
+  },
+  {
+    id: 'gallery-specialty-cupcakes',
+    name: 'Specialty Cupcakes',
+    description: 'Gourmet flavors with premium ingredients',
+    category: 'cupcakes',
+    image: '/images/products/specialty-cupcakes.jpg',
+    order: 7,
+  },
+  {
+    id: 'gallery-cake-pops',
+    name: 'Classic Cake Pops',
+    description: 'Delicious cake pops dipped in chocolate',
+    category: 'cake-pops',
+    image: '/images/products/classic-cake-pops.jpg',
+    order: 8,
+  },
+  {
+    id: 'gallery-fancy-cake-pops',
+    name: 'Fancy Cake Pops',
+    description: 'Decorated cake pops with custom designs',
+    category: 'cake-pops',
+    image: '/images/products/fancy-cake-pops.jpg',
+    order: 9,
+  },
+  {
+    id: 'gallery-themed-cake-pops',
+    name: 'Themed Cake Pops',
+    description: 'Custom themed cake pops for special occasions',
+    category: 'cake-pops',
+    image: '/images/products/themed-cake-pops.jpg',
+    order: 10,
+  },
+]
+
 async function main() {
   console.log('Starting seed...')
 
+  // Seed products
   for (const product of products) {
     await prisma.product.upsert({
       where: { id: product.id },
       update: product,
       create: product,
+    })
+  }
+
+  // Seed gallery items
+  for (const item of galleryItems) {
+    await prisma.galleryItem.upsert({
+      where: { id: item.id },
+      update: item,
+      create: item,
     })
   }
 

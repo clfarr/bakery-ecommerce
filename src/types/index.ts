@@ -38,3 +38,14 @@ export interface OrderFormData {
   zipCode?: string
   specialInstructions?: string
 }
+
+export interface GalleryItem {
+  id: string
+  name: string
+  description: string
+  category: 'cakes' | 'cupcakes' | 'cake-pops'
+  image: string
+  order: number
+  createdAt?: string
+  updatedAt?: string
+}
