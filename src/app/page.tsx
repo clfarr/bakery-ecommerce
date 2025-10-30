@@ -7,6 +7,11 @@ export default async function Home() {
   const products = await getProducts()
   const featuredProducts = products.slice(0, 3)
 
+  // Get one product from each category for specialties section
+  const cakeProduct = products.find(p => p.category === 'cakes')
+  const cupcakeProduct = products.find(p => p.category === 'cupcakes')
+  const cakePopProduct = products.find(p => p.category === 'cake-pops')
+
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
@@ -80,36 +85,72 @@ export default async function Home() {
           <h2 className="text-4xl font-bold text-center mb-12">Our Specialties</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Link href="/products?category=cakes" className="group">
-              <div className="bg-white rounded-lg p-8 text-center hover:shadow-lg transition-shadow">
-                <div className="text-6xl mb-4">🎂</div>
-                <h3 className="text-2xl font-semibold mb-2 group-hover:text-primary-600 transition-colors">
-                  Custom Cakes
-                </h3>
-                <p className="text-gray-600">
-                  Beautiful custom cakes for birthdays, weddings, and celebrations
-                </p>
+              <div className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                {cakeProduct && (
+                  <div className="relative h-64 bg-white">
+                    <Image
+                      src={cakeProduct.image || '/images/products/vanilla-cake.jpg'}
+                      alt="Custom Cakes"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-contain"
+                    />
+                  </div>
+                )}
+                <div className="p-6 text-center">
+                  <h3 className="text-2xl font-semibold mb-2 group-hover:text-primary-600 transition-colors">
+                    Custom Cakes
+                  </h3>
+                  <p className="text-gray-600">
+                    Beautiful custom cakes for birthdays, weddings, and celebrations
+                  </p>
+                </div>
               </div>
             </Link>
             <Link href="/products?category=cupcakes" className="group">
-              <div className="bg-white rounded-lg p-8 text-center hover:shadow-lg transition-shadow">
-                <div className="text-6xl mb-4">🧁</div>
-                <h3 className="text-2xl font-semibold mb-2 group-hover:text-primary-600 transition-colors">
-                  Cupcakes
-                </h3>
-                <p className="text-gray-600">
-                  Delicious cupcakes in various flavors, perfect for any occasion
-                </p>
+              <div className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                {cupcakeProduct && (
+                  <div className="relative h-64 bg-white">
+                    <Image
+                      src={cupcakeProduct.image || '/images/products/vanilla-cupcakes.jpg'}
+                      alt="Cupcakes"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-contain"
+                    />
+                  </div>
+                )}
+                <div className="p-6 text-center">
+                  <h3 className="text-2xl font-semibold mb-2 group-hover:text-primary-600 transition-colors">
+                    Cupcakes
+                  </h3>
+                  <p className="text-gray-600">
+                    Delicious cupcakes in various flavors, perfect for any occasion
+                  </p>
+                </div>
               </div>
             </Link>
             <Link href="/products?category=cake-pops" className="group">
-              <div className="bg-white rounded-lg p-8 text-center hover:shadow-lg transition-shadow">
-                <div className="text-6xl mb-4">🍭</div>
-                <h3 className="text-2xl font-semibold mb-2 group-hover:text-primary-600 transition-colors">
-                  Cake Pops
-                </h3>
-                <p className="text-gray-600">
-                  Bite-sized treats on a stick, perfect for parties and gifts
-                </p>
+              <div className="bg-white rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                {cakePopProduct && (
+                  <div className="relative h-64 bg-white">
+                    <Image
+                      src={cakePopProduct.image || '/images/products/classic-cake-pops.jpg'}
+                      alt="Cake Pops"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-contain"
+                    />
+                  </div>
+                )}
+                <div className="p-6 text-center">
+                  <h3 className="text-2xl font-semibold mb-2 group-hover:text-primary-600 transition-colors">
+                    Cake Pops
+                  </h3>
+                  <p className="text-gray-600">
+                    Bite-sized treats on a stick, perfect for parties and gifts
+                  </p>
+                </div>
               </div>
             </Link>
           </div>
